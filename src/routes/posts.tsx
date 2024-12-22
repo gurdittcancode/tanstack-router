@@ -1,15 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { postsQueryOption } from "../fetchPosts";
 
 export const Route = createFileRoute("/posts")({
     component: RouteComponent,
-    loader: () => "POSTS LOADER IS HERE AHHHHHHH",
+    loader: ({ context: { queryClient } }) => {
+        return queryClient.ensureQueryData(postsQueryOption());
+    },
+    pendingComponent: () => <div>Loading...</div>,
 });
 
 function RouteComponent() {
-    const response = Route.useLoaderData();
+    const posts = Route.useLoaderData();
     return (
         <div>
-            Hello "/posts"! <p>response: {response}</p>
+            Posts
+            <div>
+                {posts.map((post) => (
+                    <div key={post.id}>
+                        <h2>{post.title}</h2>
+                        <p>{post.body}</p>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
