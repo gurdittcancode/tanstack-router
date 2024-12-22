@@ -2,8 +2,14 @@ import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/posts")({
     component: RouteComponent,
+    loader: () => "POSTS LOADER IS HERE AHHHHHHH",
 });
 
 function RouteComponent() {
-    return <div>Hello "/posts"!</div>;
+    const response = Route.useLoaderData();
+    return (
+        <div>
+            Hello "/posts"! <p>response: {response}</p>
+        </div>
+    );
 }
